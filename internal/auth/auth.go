@@ -1,13 +1,25 @@
 package auth
 
-import "net/http"
+import (
+	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
+)
+
+func init() {
+	if err := godotenv.Load(); err != nil {
+		panic("Error loading .env file")
+	}
+}
 
 func APIKeyMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		apiKey := r.Header.Get("X-API-Key")
-		if apiKey != "secret123" {
+		validKey := os.Getenv("API_KEY")
+
+		if apiKey != validKey {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
 		}
 		next.ServeHTTP(w, r)
 	}
