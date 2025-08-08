@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /auth/login:
+    get:
+      consumes:
+      - application/json
+      description: Генерирует JWT-токен
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JWT Token
+          schema:
+            type: string
+      summary: Логин пользователя
+      tags:
+      - Auth
+swagger: "2.0"
